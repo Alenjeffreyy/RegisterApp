@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { View, StyleSheet, Image, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import StunningBackground from "../components/StunningBackground";
-import WebCursorRobot from "../components/WebCursorRobot";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -16,7 +15,6 @@ export default function SplashScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <StunningBackground />
-      <WebCursorRobot size={160} />
       <Image
         source={require("../assets/logo.png")}
         style={styles.logoImage}
