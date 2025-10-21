@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  ScrollView,
-  TextInput,
-  Platform,
-  useWindowDimensions,
-} from "react-native";
+import { View, StyleSheet, Alert, ScrollView, Platform, useWindowDimensions } from "react-native";
+import { Text, TextInput, Button, HelperText, Divider, Surface } from "react-native-paper";
+
+// Inline DOM style for web-native <input> elements (React DOM), not RN styles
+const webDomInputStyle = {
+  width: "100%",
+  padding: 12,
+  borderRadius: 6,
+  border: "1px solid #ddd",
+  fontSize: 16,
+  backgroundColor: "#fff",
+  boxSizing: "border-box",
+};
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { db } from "../firebaseConfig";
 import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
@@ -29,9 +31,11 @@ export default function RegisterScreen({ navigation }) {
 
   const usersRef = collection(db, "users");
 
+  const hasAnyEmptyField = !name || !phone || !birthPlace || !reason || !birthDate || !birthTime;
+
   const handleRegister = async () => {
-    if (!name || !phone || !birthPlace || !reason || !birthDate || !birthTime) {
-      Alert.alert("Error", "Please fill all fields");
+    if (hasAnyEmptyField) {
+      Alert.alert("Missing information", "Please complete all fields to continue.");
       return;
     }
 
@@ -89,129 +93,137 @@ export default function RegisterScreen({ navigation }) {
         Platform.OS === "web" && styles.webContainer,
       ]}
     >
-      <Text style={styles.TopTitle}>PanchaPakshi</Text>
-      <Text style={styles.title}>Register</Text>
+      <Surface style={styles.card} elevation={2}>
+        <Text variant="headlineSmall" style={styles.TopTitle}>
+          PanchaPakshi
+        </Text>
+        <Text variant="titleLarge" style={styles.title}>
+          Register
+        </Text>
 
-      {/* Name */}
-      <View style={styles.input}>
         <TextInput
-          placeholder="Full Name / பெயர்"
+          mode="outlined"
+          label="Full Name / பெயர்"
           value={name}
           onFocus={closeBothPickers}
           onChangeText={setName}
+          style={styles.input}
         />
-      </View>
-
-      {/* Phone */}
-      <View style={styles.input}>
         <TextInput
-          placeholder="Phone Number / தொலைபேசி எண்"
+          mode="outlined"
+          label="Phone Number / தொலைபேசி எண்"
           keyboardType="phone-pad"
           value={phone}
           onFocus={closeBothPickers}
           onChangeText={setPhone}
+          style={styles.input}
         />
-      </View>
 
-      {/* Birth Date & Time Section */}
-      <View
-        style={[
-          styles.dateTimeRow,
-          isWebWide ? styles.webDateTimeRow : styles.mobileDateTimeRow,
-        ]}
-      >
-        <View style={[styles.fieldContainer, isWebWide && styles.halfWidth]}>
-          <Text style={styles.label}>Birth Date / பிறப்பு தேதி</Text>
-          {Platform.OS === "web" ? (
-            <input
-              type="date"
-              value={birthDate ? birthDate.toISOString().substr(0, 10) : ""}
-              onChange={(e) => setBirthDate(new Date(e.target.value))}
-              placeholder="Select Birth Date / பிறப்பு தேதி"
-              style={styles.webInput}
-            />
-          ) : (
-            <TouchableOpacity style={styles.pickerButton} onPress={() => setShowDatePicker(true)}>
-              <Text style={birthDate ? styles.selectedText : styles.placeholderText}>
-                {birthDate
-                  ? birthDate.toLocaleDateString()
-                  : "Select Birth Date / பிறப்பு தேதி"}
-              </Text>
-            </TouchableOpacity>
-          )}
-          {showDatePicker && Platform.OS !== "web" && (
-            <DateTimePicker
-              value={birthDate || new Date()}
-              mode="date"
-              display={Platform.OS === "ios" ? "spinner" : "default"}
-              onChange={onDateChange}
-            />
-          )}
-        </View>
+        <Divider style={styles.divider} />
+        <Text variant="titleMedium" style={styles.sectionTitle}>
+          Birth details
+        </Text>
 
-        {/* Birth Time */}
-        <View style={[styles.fieldContainer, isWebWide && styles.halfWidth]}>
-          <Text style={styles.label}>Birth Time / பிறப்பு நேரம்</Text>
-          {Platform.OS === "web" ? (
+        <View
+          style={[
+            styles.dateTimeRow,
+            isWebWide ? styles.webDateTimeRow : styles.mobileDateTimeRow,
+          ]}
+        >
+          <View style={[styles.fieldContainer, isWebWide && styles.halfWidth]}>
+            <Text style={styles.label}>Birth Date / பிறப்பு தேதி</Text>
+            {Platform.OS === "web" ? (
             <input
-              type="time"
-              value={birthTime ? birthTime.toTimeString().substr(0, 5) : ""}
-              onChange={(e) => {
-                const [hours, minutes] = e.target.value.split(":");
-                const newTime = new Date();
-                newTime.setHours(hours);
-                newTime.setMinutes(minutes);
-                setBirthTime(newTime);
-              }}
-              placeholder="Select Birth Time / பிறப்பு நேரம்"
-              style={styles.webInput}
-            />
-          ) : (
-            <TouchableOpacity style={styles.pickerButton} onPress={() => setShowTimePicker(true)}>
-              <Text style={birthTime ? styles.selectedText : styles.placeholderText}>
+                type="date"
+                value={birthDate ? birthDate.toISOString().substr(0, 10) : ""}
+                onChange={(e) => setBirthDate(new Date(e.target.value))}
+                placeholder="Select Birth Date / பிறப்பு தேதி"
+              style={webDomInputStyle}
+              />
+            ) : (
+              <Button
+                mode="outlined"
+                onPress={() => setShowDatePicker(true)}
+                style={styles.pickerButton}
+              >
+                {birthDate ? birthDate.toLocaleDateString() : "Select date"}
+              </Button>
+            )}
+            {showDatePicker && Platform.OS !== "web" && (
+              <DateTimePicker
+                value={birthDate || new Date()}
+                mode="date"
+                display={Platform.OS === "ios" ? "spinner" : "default"}
+                onChange={onDateChange}
+              />
+            )}
+          </View>
+
+          <View style={[styles.fieldContainer, isWebWide && styles.halfWidth]}>
+            <Text style={styles.label}>Birth Time / பிறப்பு நேரம்</Text>
+            {Platform.OS === "web" ? (
+            <input
+                type="time"
+                value={birthTime ? birthTime.toTimeString().substr(0, 5) : ""}
+                onChange={(e) => {
+                  const [hours, minutes] = e.target.value.split(":");
+                  const newTime = new Date();
+                  newTime.setHours(hours);
+                  newTime.setMinutes(minutes);
+                  setBirthTime(newTime);
+                }}
+                placeholder="Select Birth Time / பிறப்பு நேரம்"
+              style={webDomInputStyle}
+              />
+            ) : (
+              <Button
+                mode="outlined"
+                onPress={() => setShowTimePicker(true)}
+                style={styles.pickerButton}
+              >
                 {birthTime
-                  ? birthTime.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })
-                  : "Select Birth Time / பிறப்பு நேரம்"}
-              </Text>
-            </TouchableOpacity>
-          )}
-          {showTimePicker && Platform.OS !== "web" && (
-            <DateTimePicker
-              value={birthTime || new Date()}
-              mode="time"
-              display={Platform.OS === "ios" ? "spinner" : "default"}
-              onChange={onTimeChange}
-            />
-          )}
+                  ? birthTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                  : "Select time"}
+              </Button>
+            )}
+            {showTimePicker && Platform.OS !== "web" && (
+              <DateTimePicker
+                value={birthTime || new Date()}
+                mode="time"
+                display={Platform.OS === "ios" ? "spinner" : "default"}
+                onChange={onTimeChange}
+              />
+            )}
+          </View>
         </View>
-      </View>
 
-      {/* Birth Place */}
-      <View style={styles.input}>
         <TextInput
-          placeholder="Birth Place / பிறப்பு இடம்"
+          mode="outlined"
+          label="Birth Place / பிறப்பு இடம்"
           value={birthPlace}
           onFocus={closeBothPickers}
           onChangeText={setBirthPlace}
+          style={styles.input}
         />
-      </View>
 
-      {/* Reason */}
-      <View style={styles.input}>
         <TextInput
-          placeholder="Reason / காரணம்"
+          mode="outlined"
+          label="Reason / காரணம்"
           value={reason}
           onFocus={closeBothPickers}
           onChangeText={setReason}
+          style={styles.input}
+          multiline
         />
-      </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
+        <HelperText type="error" visible={hasAnyEmptyField}>
+          Please fill all fields to continue.
+        </HelperText>
+
+        <Button mode="contained" onPress={handleRegister} style={styles.ctaButton} accessibilityLabel="Submit registration">
+          Register
+        </Button>
+      </Surface>
     </ScrollView>
   );
 }
@@ -219,7 +231,7 @@ export default function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#F8FAFC",
     padding: 24,
     alignItems: "center",
     justifyContent: "center",
@@ -229,29 +241,25 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     paddingVertical: 40,
   },
+  card: {
+    width: "100%",
+    padding: 20,
+    borderRadius: 16,
+    backgroundColor: "#FFFFFF",
+  },
   title: {
     fontWeight: "bold",
-    color: "#333",
-    marginBottom: 16,
-    fontSize: 24,
-    fontFamily: "Cochin",
+    color: "#111827",
+    marginBottom: 12,
   },
   TopTitle: {
     fontWeight: "bold",
     color: "#4CAF50",
-    marginBottom: 16,
-    fontSize: 26,
-    fontFamily: "Cochin",
+    marginBottom: 8,
   },
   input: {
     width: "100%",
-    backgroundColor: "#fff",
-    padding: 12,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: "#ddd",
     marginBottom: 12,
-    justifyContent: "center",
   },
   dateTimeRow: {
     width: "100%",
@@ -273,51 +281,18 @@ const styles = StyleSheet.create({
     width: "46%",
   },
   label: {
-    fontWeight: "bold",
-    color: "#333",
+    fontWeight: "600",
+    color: "#374151",
     fontSize: 14,
     marginBottom: 6,
-    fontFamily: "Cochin",
   },
   pickerButton: {
     width: "100%",
-    padding: 12,
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 6,
-  },
-  placeholderText: {
-    color: "#999",
-    fontSize: 16,
-    fontFamily: "Cochin",
-  },
-  selectedText: {
-    color: "#000",
-    fontSize: 16,
-    fontFamily: "Cochin",
   },
   webInput: {
-    width: "100%",
-    padding: 12,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    fontFamily: "Cochin",
-    fontSize: 16,
-    backgroundColor: "#fff",
+    // Unused: web uses DOM style object above to prevent RN style warnings
   },
-  button: {
-    width: "100%",
-    backgroundColor: "#4CAF50",
-    padding: 14,
-    borderRadius: 6,
-    alignItems: "center",
-    marginTop: 8,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
+  divider: { marginVertical: 8 },
+  sectionTitle: { marginBottom: 8 },
+  ctaButton: { marginTop: 8 },
 });

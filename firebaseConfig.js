@@ -13,11 +13,16 @@ const firebaseConfig = {
   measurementId: "G-YSD4N7SLVL",
 };
 
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+// Ensure we initialize Firestore with RN-friendly settings ONCE to avoid backend connection issues
+let app;
+if (!getApps().length) {
+  app = initializeApp(firebaseConfig);
+  initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+    useFetchStreams: false,
+  });
+} else {
+  app = getApp();
+}
 
-export const db = getApps().length
-  ? getFirestore(app)
-  : initializeFirestore(app, {
-      experimentalForceLongPolling: true, 
-      useFetchStreams: false,
-    });
+export const db = getFirestore(app);

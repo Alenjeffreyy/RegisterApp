@@ -1,29 +1,45 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { PaperProvider, MD3LightTheme as DefaultTheme } from "react-native-paper";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import SplashScreen from "./screens/SplashScreen";
-import RegisterScreen  from './screens/RegisterScreen';
+import RegisterScreen from "./screens/RegisterScreen";
 import SuccessScreen from "./screens/SuccessScreen";
 
 const Stack = createNativeStackNavigator();
 
+const theme = {
+  ...DefaultTheme,
+  roundness: 10,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#4CAF50",
+    secondary: "#0EA5E9",
+    background: "#F8FAFC",
+    surface: "#FFFFFF",
+    onSurface: "#111827",
+    error: "#EF4444",
+  },
+};
+
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Splash" 
-        component={SplashScreen}
-        options={{ headerShown: false }}
-         />
-        <Stack.Screen name="Register" 
-          component={RegisterScreen} 
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Success" 
-        component={SuccessScreen} 
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );  
+    <PaperProvider theme={theme}>
+      <SafeAreaProvider>
+        <StatusBar style="dark" />
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Splash"
+            screenOptions={{ headerShown: false }}
+          >
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+            <Stack.Screen name="Success" component={SuccessScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </PaperProvider>
+  );
 }
