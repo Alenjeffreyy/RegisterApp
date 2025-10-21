@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert, ScrollView, Platform, useWindowDimensions } fr
 import { Text, TextInput, Button, HelperText, Divider, Surface } from "react-native-paper";
 import StunningBackground from "../components/StunningBackground";
 import Tilt from "../components/Tilt";
+import WebCursorShiva from "../components/WebCursorShiva";
 
 // Inline DOM style for web-native <input> elements (React DOM), not RN styles
 const webDomInputStyle = {
@@ -91,7 +92,11 @@ export default function RegisterScreen({ navigation }) {
   return (
     <View style={styles.root}>
       <StunningBackground />
-      <Text style={styles.brandTopRight}>Shiv</Text>
+      {Platform.OS === "web" ? (
+        <WebCursorShiva size={140} />
+      ) : (
+        <Text style={styles.brandTopRight}>Shiv</Text>
+      )}
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <Tilt style={styles.tiltWrap}>
           <Surface style={styles.card} elevation={3}>
