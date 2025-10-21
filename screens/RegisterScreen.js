@@ -3,7 +3,6 @@ import { View, StyleSheet, Alert, ScrollView, Platform, useWindowDimensions } fr
 import { Text, TextInput, Button, HelperText, Divider, Surface } from "react-native-paper";
 import StunningBackground from "../components/StunningBackground";
 import Tilt from "../components/Tilt";
-import WebCursorRobot from "../components/WebCursorRobot";
 
 // Inline DOM style for web-native <input> elements (React DOM), not RN styles
 const webDomInputStyle = {
@@ -90,22 +89,18 @@ export default function RegisterScreen({ navigation }) {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={[
-        styles.container,
-        Platform.OS === "web" && styles.webContainer,
-      ]}
-    >
+    <View style={styles.root}>
       <StunningBackground />
-      <WebCursorRobot size={140} />
-      <Tilt style={styles.tiltWrap}>
-        <Surface style={styles.card} elevation={2}>
-        <Text variant="headlineSmall" style={styles.TopTitle}>
-          PanchaPakshi
-        </Text>
-        <Text variant="titleLarge" style={styles.title}>
-          Register
-        </Text>
+      <Text style={styles.brandTopRight}>Shiv</Text>
+      <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <Tilt style={styles.tiltWrap}>
+          <Surface style={styles.card} elevation={3}>
+            <Text variant="headlineSmall" style={styles.TopTitle}>
+              PanchaPakshi
+            </Text>
+            <Text variant="titleLarge" style={styles.title}>
+              Register
+            </Text>
 
         <TextInput
           mode="outlined"
@@ -227,47 +222,60 @@ export default function RegisterScreen({ navigation }) {
         </HelperText>
 
         <Tilt style={styles.tiltButton} tiltMaxDeg={10}>
-          <Button mode="contained" onPress={handleRegister} style={styles.ctaButton} accessibilityLabel="Submit registration">
-            Register
-          </Button>
+            <Button mode="contained" onPress={handleRegister} style={styles.ctaButton} accessibilityLabel="Submit registration">
+              Register
+            </Button>
+          </Tilt>
+          </Surface>
         </Tilt>
-      </Surface>
-      </Tilt>
-    </ScrollView>
+      </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+  },
+  brandTopRight: {
+    position: "absolute",
+    top: 16,
+    right: 16,
+    zIndex: 10,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#111827",
+  },
   container: {
     flexGrow: 1,
-    backgroundColor: "#FFFFFF",
-    padding: 24,
+    paddingVertical: 40,
+    paddingHorizontal: 24,
     alignItems: "center",
     justifyContent: "center",
   },
-  webContainer: {
-    width: "50%",
-    alignSelf: "center",
-    paddingVertical: 40,
-  },
   card: {
     width: "100%",
-    padding: 20,
+    maxWidth: 720,
+    padding: 24,
     borderRadius: 16,
     backgroundColor: "#FFFFFF",
   },
   tiltWrap: {
     width: "100%",
+    maxWidth: 720,
   },
   title: {
     fontWeight: "bold",
     color: "#111827",
     marginBottom: 12,
+    textAlign: "center",
   },
   TopTitle: {
     fontWeight: "bold",
     color: "#4CAF50",
     marginBottom: 8,
+    textAlign: "center",
   },
   input: {
     width: "100%",
@@ -307,6 +315,6 @@ const styles = StyleSheet.create({
   },
   divider: { marginVertical: 8 },
   sectionTitle: { marginBottom: 8 },
-  ctaButton: { marginTop: 8 },
+  ctaButton: { marginTop: 8, borderRadius: 10 },
   tiltButton: { width: "100%" },
 });
