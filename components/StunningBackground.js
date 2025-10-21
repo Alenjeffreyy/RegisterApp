@@ -1,154 +1,121 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { View, StyleSheet, useWindowDimensions, Animated, Easing } from "react-native";
-import Svg, {
-  Defs,
-  LinearGradient,
-  RadialGradient,
-  Stop,
-  Rect,
-  Circle,
-  G,
-  Line,
-} from "react-native-svg";
+import Svg, { Defs, RadialGradient, Stop, Rect, Circle, G, Line } from "react-native-svg";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
-const AnimatedRect = Animated.createAnimatedComponent(Rect);
+const AnimatedLine = Animated.createAnimatedComponent(Line);
 
 export default function StunningBackground({ children }) {
   const { width, height } = useWindowDimensions();
 
-  const a = useRef(new Animated.Value(0)).current;
-  const b = useRef(new Animated.Value(0)).current;
-  const c = useRef(new Animated.Value(0)).current;
-  const shine = useRef(new Animated.Value(0)).current;
+  // Twinkle drivers
+  const twinkleA = useRef(new Animated.Value(0)).current;
+  const twinkleB = useRef(new Animated.Value(0)).current;
+  const twinkleC = useRef(new Animated.Value(0)).current;
+  // Soft glow for constellation lines
+  const glow = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const loop = (val, duration) =>
       Animated.loop(
         Animated.sequence([
-          Animated.timing(val, {
-            toValue: 1,
-            duration,
-            easing: Easing.inOut(Easing.quad),
-            useNativeDriver: false,
-          }),
-          Animated.timing(val, {
-            toValue: 0,
-            duration,
-            easing: Easing.inOut(Easing.quad),
-            useNativeDriver: false,
-          }),
+          Animated.timing(val, { toValue: 1, duration, easing: Easing.inOut(Easing.quad), useNativeDriver: false }),
+          Animated.timing(val, { toValue: 0, duration, easing: Easing.inOut(Easing.quad), useNativeDriver: false }),
         ])
       ).start();
 
-    loop(a, 16000);
-    loop(b, 22000);
-    loop(c, 26000);
+    loop(twinkleA, 2600);
+    loop(twinkleB, 3800);
+    loop(twinkleC, 5200);
 
     Animated.loop(
       Animated.sequence([
-        Animated.timing(shine, {
-          toValue: 1,
-          duration: 10000,
-          easing: Easing.inOut(Easing.quad),
-          useNativeDriver: false,
-        }),
-        Animated.timing(shine, {
-          toValue: 0,
-          duration: 10000,
-          easing: Easing.inOut(Easing.quad),
-          useNativeDriver: false,
-        }),
+        Animated.timing(glow, { toValue: 1, duration: 4000, easing: Easing.inOut(Easing.quad), useNativeDriver: false }),
+        Animated.timing(glow, { toValue: 0, duration: 4000, easing: Easing.inOut(Easing.quad), useNativeDriver: false }),
       ])
     ).start();
-  }, [a, b, c, shine]);
+  }, [twinkleA, twinkleB, twinkleC, glow]);
 
-  const orb1 = {
-    cx: a.interpolate({ inputRange: [0, 1], outputRange: [0.2 * width, 0.8 * width] }),
-    cy: a.interpolate({ inputRange: [0, 1], outputRange: [0.25 * height, 0.15 * height] }),
-    r: a.interpolate({ inputRange: [0, 1], outputRange: [height * 0.28, height * 0.34] }),
-  };
-  const orb2 = {
-    cx: b.interpolate({ inputRange: [0, 1], outputRange: [0.85 * width, 0.15 * width] }),
-    cy: b.interpolate({ inputRange: [0, 1], outputRange: [0.75 * height, 0.65 * height] }),
-    r: b.interpolate({ inputRange: [0, 1], outputRange: [height * 0.22, height * 0.3] }),
-  };
-  const orb3 = {
-    cx: c.interpolate({ inputRange: [0, 1], outputRange: [0.1 * width, 0.9 * width] }),
-    cy: c.interpolate({ inputRange: [0, 1], outputRange: [0.55 * height, 0.35 * height] }),
-    r: c.interpolate({ inputRange: [0, 1], outputRange: [height * 0.16, height * 0.22] }),
-  };
+  // Generate star positions and per-star animated size/opacity factors
+  const stars = useMemo(() => {
+    const count = Math.max(90, Math.min(180, Math.round((width * height) / 14000)));
+    const out = [];
+    for (let i = 0; i < count; i += 1) {
+      const x = Math.random() * width;
+      const y = Math.random() * height;
+      const baseRadius = 0.6 + Math.random() * 1.6;
+      const baseOpacity = 0.45 + Math.random() * 0.5;
+      const group = i % 3;
+      const radiusBase = new Animated.Value(baseRadius);
+      const opacityBase = new Animated.Value(baseOpacity);
+      const flicker = group === 0 ? twinkleA : group === 1 ? twinkleB : twinkleC;
+      const size = Animated.multiply(radiusBase, flicker.interpolate({ inputRange: [0, 1], outputRange: [0.85, 1.15] }));
+      const opacity = Animated.multiply(opacityBase, flicker.interpolate({ inputRange: [0, 1], outputRange: [0.6, 1] }));
+      out.push({ x, y, size, opacity });
+    }
+    return out;
+  }, [width, height, twinkleA, twinkleB, twinkleC]);
 
-  const shineY = shine.interpolate({ inputRange: [0, 1], outputRange: [-height, height] });
+  // A subtle constellation path (purely decorative)
+  const constellationPoints = useMemo(() => {
+    return [
+      { x: width * 0.18, y: height * 0.22 },
+      { x: width * 0.42, y: height * 0.35 },
+      { x: width * 0.68, y: height * 0.28 },
+      { x: width * 0.82, y: height * 0.12 },
+      { x: width * 0.55, y: height * 0.58 },
+      { x: width * 0.35, y: height * 0.72 },
+    ];
+  }, [width, height]);
 
-  const GREEN = "#4CAF50";
-  const GREEN_SOFT = "#69D37A";
-  const BLACK = "#000000";
-  const WHITE = "#FFFFFF";
-  const OFF_WHITE = "#F7FAFC";
-
-  const gridStep = Math.max(80, Math.min(120, Math.round(width / 8)));
-  const verticals = Array.from({ length: Math.ceil(width / gridStep) + 1 }, (_, i) => i * gridStep);
-  const horizontals = Array.from({ length: Math.ceil(height / gridStep) + 1 }, (_, i) => i * gridStep);
+  const constellationOpacity = glow.interpolate({ inputRange: [0, 1], outputRange: [0.08, 0.18] });
 
   return (
     <View style={styles.container} pointerEvents="none">
       <Svg width={width} height={height} style={StyleSheet.absoluteFill}>
         <Defs>
-          <RadialGradient id="bgVignette" cx="50%" cy="50%" r="70%">
-            <Stop offset="0%" stopColor={WHITE} stopOpacity={1} />
-            <Stop offset="100%" stopColor={OFF_WHITE} stopOpacity={1} />
+          <RadialGradient id="bgNight" cx="50%" cy="50%" r="75%">
+            <Stop offset="0%" stopColor="#0b1020" stopOpacity="1" />
+            <Stop offset="100%" stopColor="#060914" stopOpacity="1" />
           </RadialGradient>
-
-          <RadialGradient id="orbGreen" cx="50%" cy="50%" r="50%">
-            <Stop offset="0%" stopColor={GREEN} stopOpacity={0.45} />
-            <Stop offset="100%" stopColor={GREEN} stopOpacity={0} />
+          <RadialGradient id="nebula" cx="20%" cy="70%" r="60%">
+            <Stop offset="0%" stopColor="#7c3aed" stopOpacity="0.18" />
+            <Stop offset="100%" stopColor="#7c3aed" stopOpacity="0" />
           </RadialGradient>
-
-          <RadialGradient id="orbGreenSoft" cx="50%" cy="50%" r="50%">
-            <Stop offset="0%" stopColor={GREEN_SOFT} stopOpacity={0.35} />
-            <Stop offset="100%" stopColor={GREEN_SOFT} stopOpacity={0} />
-          </RadialGradient>
-
-          <LinearGradient id="shineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <Stop offset="0%" stopColor={BLACK} stopOpacity={0} />
-            <Stop offset="50%" stopColor={BLACK} stopOpacity={0.035} />
-            <Stop offset="100%" stopColor={BLACK} stopOpacity={0} />
-          </LinearGradient>
         </Defs>
 
-        <Rect x={0} y={0} width={width} height={height} fill="url(#bgVignette)" />
+        {/* Night sky base and soft nebula tint */}
+        <Rect x={0} y={0} width={width} height={height} fill="url(#bgNight)" />
+        <Rect x={0} y={0} width={width} height={height} fill="url(#nebula)" />
 
-        <G opacity={0.06}>
-          {verticals.map((x) => (
-            <Line key={`v-${x}`} x1={x} y1={0} x2={x} y2={height} stroke={BLACK} strokeWidth={1} />
-          ))}
-          {horizontals.map((y) => (
-            <Line key={`h-${y}`} x1={0} y1={y} x2={width} y2={y} stroke={BLACK} strokeWidth={1} />
+        {/* Starfield */}
+        <G>
+          {stars.map((s, idx) => (
+            <AnimatedCircle key={`star-${idx}`} cx={s.x} cy={s.y} r={s.size} fill="#FFFFFF" opacity={s.opacity} />
           ))}
         </G>
 
-        <AnimatedCircle cx={orb1.cx} cy={orb1.cy} r={orb1.r} fill="url(#orbGreen)" />
-        <AnimatedCircle cx={orb2.cx} cy={orb2.cy} r={orb2.r} fill="url(#orbGreenSoft)" />
-        <AnimatedCircle cx={orb3.cx} cy={orb3.cy} r={orb3.r} fill="url(#orbGreen)" />
-
-        <G opacity={0.9}>
-          <AnimatedRect
-            x={-width}
-            y={shineY}
-            width={width * 3}
-            height={Math.max(120, height * 0.18)}
-            fill="url(#shineGrad)"
-            transform={`rotate(25 ${width / 2} ${height / 2})`}
-          />
-        </G>
-
-        <G opacity={0.08}>
-          <Circle cx={width * 0.15} cy={height * 0.2} r={1.5} fill={WHITE} />
-          <Circle cx={width * 0.35} cy={height * 0.8} r={1} fill={WHITE} />
-          <Circle cx={width * 0.55} cy={height * 0.6} r={1.2} fill={WHITE} />
-          <Circle cx={width * 0.75} cy={height * 0.3} r={1.4} fill={WHITE} />
-          <Circle cx={width * 0.9} cy={height * 0.7} r={1.1} fill={WHITE} />
+        {/* Decorative constellation */}
+        <G>
+          {constellationPoints.map((p, idx) => {
+            if (idx === constellationPoints.length - 1) return null;
+            const next = constellationPoints[idx + 1];
+            return (
+              <AnimatedLine
+                key={`line-${idx}`}
+                x1={p.x}
+                y1={p.y}
+                x2={next.x}
+                y2={next.y}
+                stroke="#c4b5fd"
+                strokeWidth={1}
+                strokeOpacity={constellationOpacity}
+              />
+            );
+          })}
+          {constellationPoints.map((p, idx) => (
+            <Circle key={`node-${idx}`} cx={p.x} cy={p.y} r={1.6} fill="#e9d5ff" opacity={0.35} />
+          ))}
         </G>
       </Svg>
 
