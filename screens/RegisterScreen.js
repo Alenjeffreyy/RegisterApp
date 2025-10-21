@@ -3,7 +3,8 @@ import { View, StyleSheet, Alert, ScrollView, Platform, useWindowDimensions } fr
 import { Text, TextInput, Button, HelperText, Divider, Surface } from "react-native-paper";
 import StunningBackground from "../components/StunningBackground";
 import Tilt from "../components/Tilt";
-import WebCursorShiva from "../components/WebCursorShiva";
+import WebCursorShivaImage from "../components/WebCursorShivaImage";
+import WebTrishulOmBadge from "../components/WebTrishulOmBadge";
 
 // Inline DOM style for web-native <input> elements (React DOM), not RN styles
 const webDomInputStyle = {
@@ -31,6 +32,7 @@ export default function RegisterScreen({ navigation }) {
 
   const { width } = useWindowDimensions();
   const isWebWide = Platform.OS === "web" && width > 700;
+  const shivaImageUrl = process.env.EXPO_PUBLIC_SHIVA_IMAGE_URL;
 
   const usersRef = collection(db, "users");
 
@@ -92,11 +94,11 @@ export default function RegisterScreen({ navigation }) {
   return (
     <View style={styles.root}>
       <StunningBackground />
-      {Platform.OS === "web" ? (
-        <WebCursorShiva size={140} />
-      ) : (
-        <Text style={styles.brandTopRight}>Shiv</Text>
-      )}
+      {Platform.OS === "web"
+        ? (shivaImageUrl
+            ? <WebCursorShivaImage size={140} imageUri={shivaImageUrl} />
+            : <WebTrishulOmBadge size={140} />)
+        : <Text style={styles.brandTopRight}>Shiv</Text>}
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <Tilt style={styles.tiltWrap}>
           <Surface style={styles.card} elevation={3}>
