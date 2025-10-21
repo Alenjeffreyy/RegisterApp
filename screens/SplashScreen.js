@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Text } from "react-native-paper";
+import StunningBackground from "../components/StunningBackground";
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
@@ -13,6 +14,7 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <StunningBackground />
       <Image
         source={require("../assets/logo.png")}
         style={styles.logoImage}
@@ -31,7 +33,7 @@ export default function SplashScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: "#000000",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 24,
@@ -42,11 +44,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   logoText: {
-    color: "#111827",
+    color: "#FFFFFF",
     fontWeight: "bold",
     marginBottom: 6,
   },
   subtitle: {
-    color: "#6B7280",
+    color: "#FFFFFF",
+    opacity: 0.7,
   },
 });
