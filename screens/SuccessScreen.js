@@ -11,7 +11,7 @@ export default function SuccessScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <StunningBackground />
-      <WebCursorRobot size={140} />
+      <Text style={styles.brandTopRight}>Shiv</Text>
       <Tilt>
         <Surface style={styles.card} elevation={2}>
         <Text variant="headlineSmall" style={styles.success}>🎉 Registration Successful!</Text>
@@ -32,6 +32,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     padding: 24,
+  },
+  brandTopRight: {
+    position: "absolute",
+    top: 16,
+    right: 16,
+    zIndex: 10,
+    fontSize: 18,
+    fontWeight: "700",
+    color: "#111827",
   },
   card: {
     width: "100%",
