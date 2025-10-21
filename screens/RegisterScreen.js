@@ -233,7 +233,7 @@ export default function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#000000",
+    backgroundColor: "#FFFFFF",
     padding: 24,
     alignItems: "center",
     justifyContent: "center",
@@ -247,11 +247,11 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 20,
     borderRadius: 16,
-    backgroundColor: "#111111",
+    backgroundColor: "#FFFFFF",
   },
   title: {
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#111827",
     marginBottom: 12,
   },
   TopTitle: {
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: "600",
-    color: "#FFFFFF",
+    color: "#111827",
     opacity: 0.8,
     fontSize: 14,
     marginBottom: 6,

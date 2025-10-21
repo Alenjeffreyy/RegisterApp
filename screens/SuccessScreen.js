@@ -23,14 +23,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#000000",
+    backgroundColor: "#FFFFFF",
     padding: 24,
   },
   card: {
     width: "100%",
     padding: 20,
     borderRadius: 16,
-    backgroundColor: "#111111",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
   },
   success: {
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   name: {
-    color: "#FFFFFF",
+    color: "#111827",
     marginBottom: 16,
     textAlign: "center",
   },

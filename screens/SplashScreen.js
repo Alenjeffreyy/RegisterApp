@@ -33,7 +33,7 @@ export default function SplashScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: "#FFFFFF",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 24,
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   logoText: {
-    color: "#FFFFFF",
+    color: "#111827",
     fontWeight: "bold",
     marginBottom: 6,
   },
   subtitle: {
-    color: "#FFFFFF",
+    color: "#111827",
     opacity: 0.7,
   },
 });
