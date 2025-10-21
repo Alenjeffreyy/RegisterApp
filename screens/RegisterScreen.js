@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, StyleSheet, Alert, ScrollView, Platform, useWindowDimensions } from "react-native";
 import { Text, TextInput, Button, HelperText, Divider, Surface } from "react-native-paper";
 import StunningBackground from "../components/StunningBackground";
+import Tilt from "../components/Tilt";
+import WebCursorRobot from "../components/WebCursorRobot";
 
 // Inline DOM style for web-native <input> elements (React DOM), not RN styles
 const webDomInputStyle = {
@@ -95,7 +97,9 @@ export default function RegisterScreen({ navigation }) {
       ]}
     >
       <StunningBackground />
-      <Surface style={styles.card} elevation={2}>
+      <WebCursorRobot size={140} />
+      <Tilt style={styles.tiltWrap}>
+        <Surface style={styles.card} elevation={2}>
         <Text variant="headlineSmall" style={styles.TopTitle}>
           PanchaPakshi
         </Text>
@@ -222,10 +226,13 @@ export default function RegisterScreen({ navigation }) {
           Please fill all fields to continue.
         </HelperText>
 
-        <Button mode="contained" onPress={handleRegister} style={styles.ctaButton} accessibilityLabel="Submit registration">
-          Register
-        </Button>
+        <Tilt style={styles.tiltButton} tiltMaxDeg={10}>
+          <Button mode="contained" onPress={handleRegister} style={styles.ctaButton} accessibilityLabel="Submit registration">
+            Register
+          </Button>
+        </Tilt>
       </Surface>
+      </Tilt>
     </ScrollView>
   );
 }
@@ -248,6 +255,9 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 16,
     backgroundColor: "#FFFFFF",
+  },
+  tiltWrap: {
+    width: "100%",
   },
   title: {
     fontWeight: "bold",
@@ -298,4 +308,5 @@ const styles = StyleSheet.create({
   divider: { marginVertical: 8 },
   sectionTitle: { marginBottom: 8 },
   ctaButton: { marginTop: 8 },
+  tiltButton: { width: "100%" },
 });
