@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Alert, ScrollView, Platform, useWindowDimensions } from "react-native";
 import { Text, TextInput, Button, HelperText, Divider, Surface } from "react-native-paper";
+import StunningBackground from "../components/StunningBackground";
 
 // Inline DOM style for web-native <input> elements (React DOM), not RN styles
 const webDomInputStyle = {
@@ -93,6 +94,7 @@ export default function RegisterScreen({ navigation }) {
         Platform.OS === "web" && styles.webContainer,
       ]}
     >
+      <StunningBackground />
       <Surface style={styles.card} elevation={2}>
         <Text variant="headlineSmall" style={styles.TopTitle}>
           PanchaPakshi
@@ -231,7 +233,7 @@ export default function RegisterScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#F8FAFC",
+    backgroundColor: "#000000",
     padding: 24,
     alignItems: "center",
     justifyContent: "center",
@@ -245,11 +247,11 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 20,
     borderRadius: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#111111",
   },
   title: {
     fontWeight: "bold",
-    color: "#111827",
+    color: "#FFFFFF",
     marginBottom: 12,
   },
   TopTitle: {
@@ -282,7 +284,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontWeight: "600",
-    color: "#374151",
+    color: "#FFFFFF",
+    opacity: 0.8,
     fontSize: 14,
     marginBottom: 6,
   },

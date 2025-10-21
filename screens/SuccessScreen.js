@@ -1,12 +1,14 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Button, Surface } from "react-native-paper";
+import StunningBackground from "../components/StunningBackground";
 
 export default function SuccessScreen({ route, navigation }) {
   const { userName } = route.params;
 
   return (
     <View style={styles.container}>
+      <StunningBackground />
       <Surface style={styles.card} elevation={2}>
         <Text variant="headlineSmall" style={styles.success}>🎉 Registration Successful!</Text>
         <Text variant="titleMedium" style={styles.name}>Welcome, {userName}!</Text>
@@ -21,14 +23,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F8FAFC",
+    backgroundColor: "#000000",
     padding: 24,
   },
   card: {
     width: "100%",
     padding: 20,
     borderRadius: 16,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#111111",
     alignItems: "center",
   },
   success: {
@@ -37,7 +39,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   name: {
-    color: "#111827",
+    color: "#FFFFFF",
     marginBottom: 16,
     textAlign: "center",
   },

@@ -16,10 +16,10 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: "#4CAF50",
-    secondary: "#0EA5E9",
-    background: "#F8FAFC",
-    surface: "#FFFFFF",
-    onSurface: "#111827",
+    secondary: "#4CAF50",
+    background: "#000000",
+    surface: "#111111",
+    onSurface: "#FFFFFF",
     error: "#EF4444",
   },
 };
@@ -28,7 +28,7 @@ export default function App() {
   return (
     <PaperProvider theme={theme}>
       <SafeAreaProvider>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <NavigationContainer>
           <Stack.Navigator
             initialRouteName="Splash"
