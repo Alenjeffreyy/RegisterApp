@@ -85,6 +85,7 @@ export default function StunningBackground({ children }) {
   const GREEN_SOFT = "#69D37A";
   const BLACK = "#000000";
   const WHITE = "#FFFFFF";
+  const OFF_WHITE = "#F7FAFC";
 
   const gridStep = Math.max(80, Math.min(120, Math.round(width / 8)));
   const verticals = Array.from({ length: Math.ceil(width / gridStep) + 1 }, (_, i) => i * gridStep);
@@ -95,8 +96,8 @@ export default function StunningBackground({ children }) {
       <Svg width={width} height={height} style={StyleSheet.absoluteFill}>
         <Defs>
           <RadialGradient id="bgVignette" cx="50%" cy="50%" r="70%">
-            <Stop offset="0%" stopColor={BLACK} stopOpacity={1} />
-            <Stop offset="100%" stopColor={BLACK} stopOpacity={1} />
+            <Stop offset="0%" stopColor={WHITE} stopOpacity={1} />
+            <Stop offset="100%" stopColor={OFF_WHITE} stopOpacity={1} />
           </RadialGradient>
 
           <RadialGradient id="orbGreen" cx="50%" cy="50%" r="50%">
@@ -110,9 +111,9 @@ export default function StunningBackground({ children }) {
           </RadialGradient>
 
           <LinearGradient id="shineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <Stop offset="0%" stopColor={WHITE} stopOpacity={0} />
-            <Stop offset="50%" stopColor={WHITE} stopOpacity={0.05} />
-            <Stop offset="100%" stopColor={WHITE} stopOpacity={0} />
+            <Stop offset="0%" stopColor={BLACK} stopOpacity={0} />
+            <Stop offset="50%" stopColor={BLACK} stopOpacity={0.035} />
+            <Stop offset="100%" stopColor={BLACK} stopOpacity={0} />
           </LinearGradient>
         </Defs>
 
@@ -120,10 +121,10 @@ export default function StunningBackground({ children }) {
 
         <G opacity={0.06}>
           {verticals.map((x) => (
-            <Line key={`v-${x}`} x1={x} y1={0} x2={x} y2={height} stroke={WHITE} strokeWidth={1} />
+            <Line key={`v-${x}`} x1={x} y1={0} x2={x} y2={height} stroke={BLACK} strokeWidth={1} />
           ))}
           {horizontals.map((y) => (
-            <Line key={`h-${y}`} x1={0} y1={y} x2={width} y2={y} stroke={WHITE} strokeWidth={1} />
+            <Line key={`h-${y}`} x1={0} y1={y} x2={width} y2={y} stroke={BLACK} strokeWidth={1} />
           ))}
         </G>
 
