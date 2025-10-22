@@ -11,7 +11,7 @@ export default function WebTrishulOmBadge({ size = 140, style }) {
 
   return (
     <div style={{ position: "absolute", top: 16, right: 16, zIndex: 10, ...style }}>
-      <Svg width={width} height={height} role="img" aria-label="ॐ with trishul">
+      <Svg width={width} height={height} role="img" aria-label="ஓம் மற்றும் திரிசூலம்">
         <Defs>
           <LinearGradient id="ringGrad" x1="0%" y1="0%" x2="0%" y2="100%">
             <Stop offset="0%" stopColor="#0ea5e9" />

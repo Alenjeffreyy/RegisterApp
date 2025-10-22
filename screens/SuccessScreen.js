@@ -11,13 +11,13 @@ export default function SuccessScreen({ route, navigation }) {
   return (
     <View style={styles.container}>
       <StunningBackground />
-      <Text style={styles.brandTopRight}>Shiv</Text>
+      <Text style={styles.brandTopRight}>சிவன்</Text>
       <Tilt>
         <Surface style={styles.card} elevation={2}>
-        <Text variant="headlineSmall" style={styles.success}>🎉 Registration Successful!</Text>
-        <Text variant="titleMedium" style={styles.name}>Welcome, {userName}!</Text>
+        <Text variant="headlineSmall" style={styles.success}>🎉 பதிவு வெற்றிகரமாக முடிந்தது!</Text>
+        <Text variant="titleMedium" style={styles.name}>வரவேற்கிறோம், {userName}!</Text>
         <Tilt tiltMaxDeg={10}>
-          <Button mode="contained" style={styles.cta} onPress={() => navigation.replace("Register")}>Register another</Button>
+          <Button mode="contained" style={styles.cta} onPress={() => navigation.replace("Register")}>மற்றொருவரை பதிவு செய்யவும்</Button>
         </Tilt>
       </Surface>
       </Tilt>

@@ -21,10 +21,10 @@ export default function SplashScreen({ navigation }) {
         resizeMode="contain"
       />
       <Text variant="headlineMedium" style={styles.logoText} accessibilityRole="header">
-        PanchaPakshi
+        பஞ்சபக்ஷி
       </Text>
       <Text variant="bodyMedium" style={styles.subtitle}>
-        Personalized insights, beautifully crafted
+        நல்ல நேரம்
       </Text>
     </View>
   );
