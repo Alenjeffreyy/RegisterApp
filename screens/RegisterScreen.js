@@ -40,7 +40,7 @@ export default function RegisterScreen({ navigation }) {
 
   const handleRegister = async () => {
     if (hasAnyEmptyField) {
-      Alert.alert("Missing information", "Please complete all fields to continue.");
+      Alert.alert("தகவல் பூர்த்தி செய்யவில்லை", "தொடர அனைத்து புலங்களையும் பூர்த்தி செய்யவும்.");
       return;
     }
 
@@ -48,7 +48,7 @@ export default function RegisterScreen({ navigation }) {
       const q = query(usersRef, where("phone", "==", phone));
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        Alert.alert("Already Registered", "This phone number is already registered.");
+        Alert.alert("ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது", "இந்த தொலைபேசி எண் ஏற்கனவே பதிவு செய்யப்பட்டுள்ளது.");
         return;
       }
 
@@ -68,11 +68,11 @@ export default function RegisterScreen({ navigation }) {
         createdAt: new Date(),
       });
 
-      Alert.alert("Success", `Registered ${name} successfully!`);
+      Alert.alert("வெற்றி", `${name} வெற்றிகரமாக பதிவு செய்யப்பட்டது!`);
       navigation.replace("Success", { userName: name });
     } catch (error) {
       console.error("Error saving data:", error);
-      Alert.alert("Error", "Something went wrong while registering.");
+      Alert.alert("பிழை", "பதிவு செய்யும் போது ஏதோ தவறு ஏற்பட்டது.");
     }
   };
 
@@ -98,20 +98,20 @@ export default function RegisterScreen({ navigation }) {
         ? (shivaImageUrl
             ? <WebCursorShivaImage size={140} imageUri={shivaImageUrl} />
             : <WebTrishulOmBadge size={140} />)
-        : <Text style={styles.brandTopRight}>Shiv</Text>}
+        : <Text style={styles.brandTopRight}>சிவன்</Text>}
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <Tilt style={styles.tiltWrap}>
           <Surface style={styles.card} elevation={3}>
             <Text variant="headlineSmall" style={styles.TopTitle}>
-              PanchaPakshi
+              பஞ்சபக்ஷி
             </Text>
             <Text variant="titleLarge" style={styles.title}>
-              Register
+              நல்ல நேரம்
             </Text>
 
         <TextInput
           mode="outlined"
-          label="Full Name / பெயர்"
+          label="பெயர்"
           value={name}
           onFocus={closeBothPickers}
           onChangeText={setName}
@@ -119,7 +119,7 @@ export default function RegisterScreen({ navigation }) {
         />
         <TextInput
           mode="outlined"
-          label="Phone Number / தொலைபேசி எண்"
+          label="தொலைபேசி எண்"
           keyboardType="phone-pad"
           value={phone}
           onFocus={closeBothPickers}
@@ -129,7 +129,7 @@ export default function RegisterScreen({ navigation }) {
 
         <Divider style={styles.divider} />
         <Text variant="titleMedium" style={styles.sectionTitle}>
-          Birth details
+          பிறப்பு விவரங்கள்
         </Text>
 
         <View
@@ -139,13 +139,13 @@ export default function RegisterScreen({ navigation }) {
           ]}
         >
           <View style={[styles.fieldContainer, isWebWide && styles.halfWidth]}>
-            <Text style={styles.label}>Birth Date / பிறப்பு தேதி</Text>
+            <Text style={styles.label}>பிறந்த தேதி</Text>
             {Platform.OS === "web" ? (
             <input
                 type="date"
                 value={birthDate ? birthDate.toISOString().substr(0, 10) : ""}
                 onChange={(e) => setBirthDate(new Date(e.target.value))}
-                placeholder="Select Birth Date / பிறப்பு தேதி"
+                placeholder="பிறந்த தேதியைத் தேர்ந்தெடுக்கவும்"
               style={webDomInputStyle}
               />
             ) : (
@@ -154,7 +154,7 @@ export default function RegisterScreen({ navigation }) {
                 onPress={() => setShowDatePicker(true)}
                 style={styles.pickerButton}
               >
-                {birthDate ? birthDate.toLocaleDateString() : "Select date"}
+                {birthDate ? birthDate.toLocaleDateString() : "தேதியைத் தேர்ந்தெடுக்கவும்"}
               </Button>
             )}
             {showDatePicker && Platform.OS !== "web" && (
@@ -168,7 +168,7 @@ export default function RegisterScreen({ navigation }) {
           </View>
 
           <View style={[styles.fieldContainer, isWebWide && styles.halfWidth]}>
-            <Text style={styles.label}>Birth Time / பிறப்பு நேரம்</Text>
+            <Text style={styles.label}>பிறந்த நேரம்</Text>
             {Platform.OS === "web" ? (
             <input
                 type="time"
@@ -180,7 +180,7 @@ export default function RegisterScreen({ navigation }) {
                   newTime.setMinutes(minutes);
                   setBirthTime(newTime);
                 }}
-                placeholder="Select Birth Time / பிறப்பு நேரம்"
+                placeholder="பிறந்த நேரத்தைத் தேர்ந்தெடுக்கவும்"
               style={webDomInputStyle}
               />
             ) : (
@@ -191,7 +191,7 @@ export default function RegisterScreen({ navigation }) {
               >
                 {birthTime
                   ? birthTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-                  : "Select time"}
+                  : "நேரத்தைத் தேர்ந்தெடுக்கவும்"}
               </Button>
             )}
             {showTimePicker && Platform.OS !== "web" && (
@@ -207,7 +207,7 @@ export default function RegisterScreen({ navigation }) {
 
         <TextInput
           mode="outlined"
-          label="Birth Place / பிறப்பு இடம்"
+          label="பிறந்த இடம்"
           value={birthPlace}
           onFocus={closeBothPickers}
           onChangeText={setBirthPlace}
@@ -216,7 +216,7 @@ export default function RegisterScreen({ navigation }) {
 
         <TextInput
           mode="outlined"
-          label="Reason / காரணம்"
+          label="காரணம்"
           value={reason}
           onFocus={closeBothPickers}
           onChangeText={setReason}
@@ -225,12 +225,12 @@ export default function RegisterScreen({ navigation }) {
         />
 
         <HelperText type="error" visible={hasAnyEmptyField}>
-          Please fill all fields to continue.
+          தொடர அனைத்து புலங்களையும் பூர்த்தி செய்யவும்.
         </HelperText>
 
         <Tilt style={styles.tiltButton} tiltMaxDeg={10}>
-            <Button mode="contained" onPress={handleRegister} style={styles.ctaButton} accessibilityLabel="Submit registration">
-              Register
+            <Button mode="contained" onPress={handleRegister} style={styles.ctaButton} accessibilityLabel="பதிவை சமர்ப்பிக்கவும்">
+              பதிவு செய்யவும்
             </Button>
           </Tilt>
           </Surface>

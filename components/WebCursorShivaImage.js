@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Platform, StyleSheet, Animated } from "react-native";
 
-export default function WebCursorShivaImage({ imageUri, size = 140, style, alt = "Lord Shiva" }) {
+export default function WebCursorShivaImage({ imageUri, size = 140, style, alt = "இறைவன் சிவன்" }) {
   if (Platform.OS !== "web") return null;
   if (!imageUri) return null;
 
