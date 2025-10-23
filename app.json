@@ -20,7 +20,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.thavamthavas.RegisterApp",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "infoPlist": {
+        "CFBundleDisplayName": "பஞ்சபக்ஷி"
+      }
     },
     "android": {
       "package": "com.thavamthavas.RegisterApp",
